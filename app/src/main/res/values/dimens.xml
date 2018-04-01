@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="largeText">20sp</dimen>
+
+    <dimen name="middleText">16sp</dimen>
+
+    <dimen name="smallText">8sp</dimen>
+
+    <dimen name="Padding_10">10dp</dimen>
+
+    <dimen name="Padding_8">8dp</dimen>
+
+    <dimen name="Padding_6">6dp</dimen>
+
+
+</resources>
