@@ -20,7 +20,6 @@ public class MyNet {
         RequestQueue requestQueue = MyApplication.getRequestQueue();
         //3.以什么方式进行网络请求:get post;
         //参数：get、post：请求方式；url：请求地址；Listener：请求成功回调事件；ErrorListener：请求是失败回调方法
-        Log.d(TAG, "requestGet: 111"+url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -34,7 +33,6 @@ public class MyNet {
                 observe.onError(volleyError);
             }
         });
-        Log.d(TAG, "requestGet: 222"+url);
 
         //4.将我们的请求放入到我们的队列中
         requestQueue.add(stringRequest);

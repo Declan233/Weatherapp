@@ -12,7 +12,7 @@
         android:id="@+id/et1"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@drawable/box_shape"
+        android:background="@drawable/box_shape2"
         android:layout_margin="20dp"
         />
     <Button
@@ -30,7 +30,16 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:layout_height="40dp"
-        android:background="@drawable/box_shape"/>
+        android:background="@drawable/box_shape2"
+        />
+    <TextView
+        android:id="@+id/tv2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <TextView
+        android:id="@+id/tv3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
     <ListView
         android:id="@+id/listview"
         android:layout_width="wrap_content"
