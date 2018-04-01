@@ -16,7 +16,8 @@
 
         <TextView
             android:id="@+id/TextName"
-            style="@style/bt_style"/>
+            style="@style/bt_style"
+            android:textAlignment="center"/>
 
     </LinearLayout>
 

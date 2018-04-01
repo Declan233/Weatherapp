@@ -77,11 +77,11 @@ public class ParseData {
         }
         return jobject;
     }
+
     public static JSONArray parseObjectArray(JSONObject object, String key){
         JSONArray array = null;
         try {
-           array  = object.getJSONArray(key);
-
+            array  = object.getJSONArray(key);
         } catch (JSONException e) {
             e.printStackTrace();
         }

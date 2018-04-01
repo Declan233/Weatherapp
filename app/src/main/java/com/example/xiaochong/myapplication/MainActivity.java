@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ListView lv1;
     private ListAdapter d;
-    private List list = new ArrayList();
+    private List<String> list = new ArrayList();
     private Button bt;
     private TextView tv1,tv2,tv3;
     private EditText editCity;
@@ -81,11 +81,12 @@ public class MainActivity extends AppCompatActivity {
                 String fl = jsonArray.getJSONObject(i).getString("fl");
                 String type = jsonArray.getJSONObject(i).getString("type");
                 String notice = jsonArray.getJSONObject(i).getString("notice");
-                list.add("日期："+date+"   天气类型："+type+" \n " +
+                String str = "日期："+date+"   天气类型："+type+" \n " +
                         "最高温："+high+"   最低温："+low+" \n " +
                         "日出：" +sunrise+ "   日落：" +sunset+ " \n " +
                         "风力："+fl+"    风向"+fx+" \n " +
-                        "温馨提示："+notice);
+                        "温馨提示："+notice;
+                list.add(str);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -105,8 +106,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String response) {
                 Log.d(TAG, "onSuccess: "+response);
-                String message = ParseData.parseString(response,"messsage");
-                if(message.equals("Check the parameters.")){
+                String message = ParseData.parseString(response,"message");
+                if(!message.equals("Success !")){
                     return;
                 }
                 //解析基本数据类型（封装）
@@ -115,29 +116,30 @@ public class MainActivity extends AppCompatActivity {
                 tv1.setText(city+" "+date+" 天气");
 
                 //解析对象中的对象属性
+
                 JSONObject data = ParseData.parseObject(response,"data");
                 String shidu =   data.optString("shidu");
-                String pm25 =  data.optString("pm25");
+                double pm25 =  data.optInt("pm25");
                 String quality =  data.optString("quality");
                 String wendu =  data.optString("wendu");
                 String ganmao =  data.optString("ganmao");
-                tv2.setText("温度："+wendu+"  \n" +
+                tv2.setText(" 温度："+wendu+"  \n" +
                         " 湿度："+shidu+"  \n " +
-                        "PM 2.5："+pm25+"  \n " +
-                        "空气质量："+quality+"  \n " +
-                        "建议："+ganmao);
+                        " PM 2.5："+pm25+"  \n " +
+                        " 空气质量："+quality+"  \n " +
+                        " 建议："+ganmao);
                 //解析对象中数组对象
                 tv3.setText(city+" 最近5日天气预报：");
-                JSONArray  array = ParseData.parseObjectArray(data,"forecast");
+
+                JSONArray array = ParseData.parseObjectArray(data,"forecast");
 
                 initData(array);
             }
 
             @Override
             public void onError(VolleyError ve) {
-                Log.d(TAG, "onError: "+ve.toString());
+                Log.d(TAG, "onError: "+city+"  "+ve.toString());
             }
         });
     }
-
 }
