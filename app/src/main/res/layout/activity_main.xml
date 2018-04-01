@@ -8,22 +8,29 @@
     android:orientation="vertical"
     tools:context="com.example.xiaochong.myapplication.MainActivity">
 
-    <TextView
-        android:id="@+id/tv1"
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:background="#928399"/>
     <EditText
         android:id="@+id/et1"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:background="@drawable/box_shape"
+        android:layout_margin="20dp"
         />
     <Button
         android:id="@+id/bt_weather"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/bt_weather"/>
-
+        android:textColor="@color/white"
+        android:background="@color/blue"
+        android:text="@string/bt_weather"
+        android:layout_gravity="center_horizontal"
+        />
+    <TextView
+        android:id="@+id/tv1"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_height="40dp"
+        android:background="@drawable/box_shape"/>
     <ListView
         android:id="@+id/listview"
         android:layout_width="wrap_content"

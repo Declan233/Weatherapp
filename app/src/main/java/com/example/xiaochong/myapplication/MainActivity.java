@@ -6,22 +6,21 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.xiaochong.myapplication.Adpter.ListAdapter;
+import com.example.xiaochong.myapplication.net.AppUrl;
+import com.example.xiaochong.myapplication.net.MyNet;
+import com.example.xiaochong.myapplication.net.Observe;
+import com.example.xiaochong.myapplication.net.ParseData;
 
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private ListAdapter d;
     private List list = new ArrayList();
     private Button bt;
-    private TextView tv;
+    private TextView tvShow;
+    private EditText editCity;
 //    command+j     tagt
     private  static  final String TAG = "MainActivity";
 
@@ -41,8 +41,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initData();
         init();
+    }
+
+
+    private void init() {
+        lv1 = findViewById(R.id.listview);
+        d = new ListAdapter(MainActivity.this, list);
+        //listview绑定适配器
+        lv1.setAdapter(d);
+        tvShow = (TextView) findViewById(R.id.tv1);
+        editCity = (EditText) findViewById(R.id.et1);
+
+        bt = (Button) findViewById(R.id.bt_weather);
+        bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getData();//获取接口数据
+            }
+        });
+
     }
 
 
@@ -52,68 +70,41 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    void init(){
-        lv1 = findViewById(R.id.listview);
-        d = new ListAdapter(MainActivity.this, list);
-        //listview绑定适配器
-        lv1.setAdapter(d);
-        bt = findViewById(R.id.bt_weather);
-        tv = findViewById(R.id.tv1);
-        bt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getData();
-            }
-        });
-    }
-
-    void getData(){
-        //参数url化
-        String city = null;
-        try {
-            city = java.net.URLEncoder.encode("北京", "utf-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+    private void getData() {
+        //获取用户输入框的值
+        String city = editCity.getText().toString().trim();
+        Log.d(TAG, "getData: city---"+city);
+        if (city.isEmpty()){
+            Log.d(TAG, "getData: 输入为空");
+            return;
         }
+        // String url= AppUrl.getUrl(city);//获取我们的接口url
+        MyNet.requestGet(this, AppUrl.getUrl(city), new Observe() {
+            @Override
+            public void onSuccess(String response) {
+                Log.d(TAG, "onSuccess: "+response);
+                //解析基本数据类型（封装）
+                String date = ParseData.parseString(response,"date");
+                String message = ParseData.parseString(response,"messsage");
+                int status = ParseData.parseInt(response,"status");
 
-        //拼地址
-        String url = String.format("http" +
-                "s://www.sojson.com/open/api/weather/json.shtml?city=%s",city);
-        //建队列
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        //请求
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String s) {
-                Log.d(TAG, "onResponse: "+s);
-                try{
-                    JSONObject object = new JSONObject(s);
-                    final String msg = object.getString("message");
-                    JSONObject data = new JSONObject(object.getString("data"));
-                    final String pm25 = data.getString("pm25");
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Log.d(TAG, "run: "+ msg);
-                            if (msg.equals("Success !")) {
-                                tv.setText(pm25);
-                            }
-                        }
-                    });
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
+                //解析对象中的对象属性
+                JSONObject data = ParseData.parseObject(response,"data");
+                String shudu =   data.optString("shidu");
+                String quality =  data.optString("quality");
+                //解析对象中数组对象
+                JSONArray  array = ParseData.parseObjectArray(data,"forecast");
+                String high =   array.optJSONObject(0).optString("high");
+
+
+                initData();
             }
-        }, new Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                Log.d(TAG, "onErrorResponse: "+volleyError.toString());
+            public void onError(VolleyError ve) {
+                Log.d(TAG, "onError: "+ve.toString());
             }
         });
-        //放入队列
-        requestQueue.add(stringRequest);
-        //队列运行
-        requestQueue.start();
     }
 
 }

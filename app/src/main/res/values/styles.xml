@@ -8,12 +8,18 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="textComment">
-        <item name="android:textSize">18sp</item>
-        <item name="android:color">#00ff00</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
+    <style name="bt_style">
+        <item name="android:text">@string/submit_text</item>
+        <item name="android:textColor">@color/red</item>
+        <item name="android:textSize">@dimen/text_size_16sp</item>
+        <item name="android:background">@color/grey</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">100dp</item>
+        <item name="android:layout_marginTop">@dimen/margin_bt_tip_10dp</item>
+
     </style>
+
+
 
 
 </resources>

@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="largeText">20sp</dimen>
-
-    <dimen name="middleText">16sp</dimen>
-
-    <dimen name="smallText">8sp</dimen>
-
-    <dimen name="Padding_10">10dp</dimen>
-
-    <dimen name="Padding_8">8dp</dimen>
-
-    <dimen name="Padding_6">6dp</dimen>
-
-
+    <dimen name="text_size_16sp">16sp</dimen>
+    <dimen name="margin_common">20dp</dimen>
+    <dimen name="margin_bt_tip_10dp">10dp</dimen>
 </resources>

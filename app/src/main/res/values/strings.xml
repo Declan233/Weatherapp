@@ -1,4 +1,8 @@
 <resources>
-    <string name="app_name">My Application</string>
-    <string name="bt_weather">get weather</string>
+    <string name="app_name">Weather</string>
+
+    <string name="btname">按钮</string>
+    <string name="submit_text">提交</string>
+    <string name="bt_weather">获得天气</string>
+
 </resources>
