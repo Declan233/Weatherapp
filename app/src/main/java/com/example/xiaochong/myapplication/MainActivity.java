@@ -12,10 +12,14 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.example.xiaochong.myapplication.Adpter.ListAdapter;
+import com.example.xiaochong.myapplication.entity.Data;
+import com.example.xiaochong.myapplication.entity.Detail;
+import com.example.xiaochong.myapplication.entity.Weather;
 import com.example.xiaochong.myapplication.net.AppUrl;
 import com.example.xiaochong.myapplication.net.MyNet;
 import com.example.xiaochong.myapplication.net.Observe;
 import com.example.xiaochong.myapplication.net.ParseData;
+import com.google.gson.Gson;
 
 
 import org.json.JSONArray;
@@ -90,11 +94,16 @@ public class MainActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-
         }
     }
 
+
+    void initData2(Data d){
+        for (int i=0; i<5; i++){
+            List<Detail> dt = d.getForecast();
+            list.add(dt.get(i).toString());
+        }
+    }
     private void getData() {
         //获取用户输入框的值
         final String city = editCity.getText().toString().trim();
@@ -110,30 +119,42 @@ public class MainActivity extends AppCompatActivity {
                 if(!message.equals("Success !")){
                     return;
                 }
-                //解析基本数据类型（封装）
-                String date = ParseData.parseString(response,"date");
 
-                tv1.setText(city+" "+date+" 天气");
+//                //解析基本数据类型（封装）
+//                String date = ParseData.parseString(response,"date");
+//
+//                tv1.setText(city+" "+date+" 天气");
+//
+//                //解析对象中的对象属性
+//
+//                JSONObject data = ParseData.parseObject(response,"data");
+//                String shidu =   data.optString("shidu");
+//                double pm25 =  data.optInt("pm25");
+//                String quality =  data.optString("quality");
+//                String wendu =  data.optString("wendu");
+//                String ganmao =  data.optString("ganmao");
 
-                //解析对象中的对象属性
+//              Gson解析
+                Gson gson = new Gson();
+                Weather w = gson.fromJson(response,Weather.class);
+                tv1.setText(city+" "+w.getDate()+" 天气");
+                Data d = w.getData();
 
-                JSONObject data = ParseData.parseObject(response,"data");
-                String shidu =   data.optString("shidu");
-                double pm25 =  data.optInt("pm25");
-                String quality =  data.optString("quality");
-                String wendu =  data.optString("wendu");
-                String ganmao =  data.optString("ganmao");
-                tv2.setText(" 温度："+wendu+"  \n" +
-                        " 湿度："+shidu+"  \n " +
-                        " PM 2.5："+pm25+"  \n " +
-                        " 空气质量："+quality+"  \n " +
-                        " 建议："+ganmao);
+                tv2.setText(d.toString());
+
+
+//                tv2.setText(" 温度："+wendu+"  \n" +
+//                        " 湿度："+shidu+"  \n " +
+//                        " PM 2.5："+pm25+"  \n " +
+//                        " 空气质量："+quality+"  \n " +
+//                        " 建议："+ganmao);
                 //解析对象中数组对象
                 tv3.setText(city+" 最近5日天气预报：");
 
-                JSONArray array = ParseData.parseObjectArray(data,"forecast");
+//                JSONArray array = ParseData.parseObjectArray(data,"forecast");
 
-                initData(array);
+//                initData(array);
+                initData2(d);
             }
 
             @Override
