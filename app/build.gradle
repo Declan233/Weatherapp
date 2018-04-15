@@ -28,4 +28,6 @@ dependencies {
     implementation files('libs/gson-2.2.4.jar')
     implementation files('libs/volley.jar')
     implementation files('libs/xUtils-2.6.10.jar')
+    compile ('com.android.support:recyclerview-v7:26.+')
+    compile ('com.jakewharton:butterknife:7.0.1')
 }

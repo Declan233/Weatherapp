@@ -1,5 +1,6 @@
-package com.example.xiaochong.myapplication;
+package com.example.xiaochong.myapplication.Activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.example.xiaochong.myapplication.Adpter.ListAdapter;
+import com.example.xiaochong.myapplication.R;
 import com.example.xiaochong.myapplication.entity.Data;
 import com.example.xiaochong.myapplication.entity.Detail;
 import com.example.xiaochong.myapplication.entity.Weather;
@@ -24,7 +26,6 @@ import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView lv1;
     private ListAdapter d;
     private List<String> list = new ArrayList();
-    private Button bt;
+    private Button bt,btcy;
     private TextView tv1,tv2,tv3;
     private EditText editCity;
 //    command+j     tagt
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void init() {
 
+        btcy = (Button)findViewById(R.id.btcy);
         editCity = (EditText) findViewById(R.id.et1);
         tv1 = (TextView) findViewById(R.id.tv1);
         tv2 = (TextView) findViewById(R.id.tv2);
@@ -67,6 +69,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getData();//获取接口数据
+            }
+        });
+        btcy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //跳转界面
+                startActivity(new Intent(MainActivity.this,RecycleActivity.class));
             }
         });
 

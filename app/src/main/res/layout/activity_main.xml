@@ -6,7 +6,17 @@
     android:layout_height="match_parent"
     android:background="#ddffdd"
     android:orientation="vertical"
-    tools:context="com.example.xiaochong.myapplication.MainActivity">
+    tools:context="com.example.xiaochong.myapplication.Activity.MainActivity">
+
+
+    <Button
+        android:id="@+id/btcy"
+        android:text="跳转界面"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:background="@color/blue"
+        android:layout_gravity="center_horizontal"/>
 
     <EditText
         android:id="@+id/et1"
@@ -51,6 +61,7 @@
         android:layout_height="wrap_content">
 
     </ListView>
+
 
 </LinearLayout>
 
