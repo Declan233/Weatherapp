@@ -1,9 +1,8 @@
 package com.example.xiaochong.myapplication.Activity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,49 +22,55 @@ import com.example.xiaochong.myapplication.net.Observe;
 import com.example.xiaochong.myapplication.net.ParseData;
 import com.google.gson.Gson;
 
-
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity {
+    @Bind(R.id.btcy)
+    Button btcy;
+    @Bind(R.id.et1)
+    EditText et1;
+    @Bind(R.id.bt_weather)
+    Button btWeather;
+    @Bind(R.id.tv1)
+    TextView tv1;
+    @Bind(R.id.tv2)
+    TextView tv2;
+    @Bind(R.id.tv3)
+    TextView tv3;
+    @Bind(R.id.listview)
+    ListView listview;
 
     //alt+enter 自动导包
 
-    private ListView lv1;
     private ListAdapter d;
     private List<String> list = new ArrayList();
-    private Button bt,btcy;
-    private TextView tv1,tv2,tv3;
-    private EditText editCity;
-//    command+j     tagt
-    private  static  final String TAG = "MainActivity";
+    //    command+j     tagt
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         init();
     }
 
 
     private void init() {
 
-        btcy = (Button)findViewById(R.id.btcy);
-        editCity = (EditText) findViewById(R.id.et1);
-        tv1 = (TextView) findViewById(R.id.tv1);
-        tv2 = (TextView) findViewById(R.id.tv2);
-        tv3 = (TextView) findViewById(R.id.tv3);
-        lv1 = findViewById(R.id.listview);
 
         d = new ListAdapter(MainActivity.this, list);
         //listview绑定适配器
-        lv1.setAdapter(d);
+        listview.setAdapter(d);
 
-        bt = (Button) findViewById(R.id.bt_weather);
-        bt.setOnClickListener(new View.OnClickListener() {
+        btWeather.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getData();//获取接口数据
@@ -74,16 +79,17 @@ public class MainActivity extends AppCompatActivity {
         btcy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "onClick: 跳转页面");
                 //跳转界面
-                startActivity(new Intent(MainActivity.this,RecycleActivity.class));
+                startActivity(new Intent(MainActivity.this, RecycleActivity.class));
             }
         });
 
     }
 
 
-    void initData(JSONArray jsonArray){
-        for (int i=0; i<5; i++){
+    void initData(JSONArray jsonArray) {
+        for (int i = 0; i < 5; i++) {
             try {
                 String date = jsonArray.getJSONObject(i).getString("date");
                 String sunrise = jsonArray.getJSONObject(i).getString("sunrise");
@@ -94,11 +100,11 @@ public class MainActivity extends AppCompatActivity {
                 String fl = jsonArray.getJSONObject(i).getString("fl");
                 String type = jsonArray.getJSONObject(i).getString("type");
                 String notice = jsonArray.getJSONObject(i).getString("notice");
-                String str = "日期："+date+"   天气类型："+type+" \n " +
-                        "最高温："+high+"   最低温："+low+" \n " +
-                        "日出：" +sunrise+ "   日落：" +sunset+ " \n " +
-                        "风力："+fl+"    风向"+fx+" \n " +
-                        "温馨提示："+notice;
+                String str = "日期：" + date + "   天气类型：" + type + " \n " +
+                        "最高温：" + high + "   最低温：" + low + " \n " +
+                        "日出：" + sunrise + "   日落：" + sunset + " \n " +
+                        "风力：" + fl + "    风向" + fx + " \n " +
+                        "温馨提示：" + notice;
                 list.add(str);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -107,25 +113,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    void initData2(Data d){
-        for (int i=0; i<5; i++){
+    void initData2(Data d) {
+        for (int i = 0; i < 5; i++) {
             List<Detail> dt = d.getForecast();
             list.add(dt.get(i).toString());
         }
     }
+
     private void getData() {
         //获取用户输入框的值
-        final String city = editCity.getText().toString().trim();
-        if (city.isEmpty()){
+        final String city = et1.getText().toString().trim();
+        if (city.isEmpty()) {
             Log.d(TAG, "getData: 输入为空");
             return;
         }
         MyNet.requestGet(this, AppUrl.getUrl(city), new Observe() {
             @Override
             public void onSuccess(String response) {
-                Log.d(TAG, "onSuccess: "+response);
-                String message = ParseData.parseString(response,"message");
-                if(!message.equals("Success !")){
+                Log.d(TAG, "onSuccess: " + response);
+                String message = ParseData.parseString(response, "message");
+                if (!message.equals("Success !")) {
                     return;
                 }
 
@@ -145,8 +152,8 @@ public class MainActivity extends AppCompatActivity {
 
 //              Gson解析
                 Gson gson = new Gson();
-                Weather w = gson.fromJson(response,Weather.class);
-                tv1.setText(city+" "+w.getDate()+" 天气");
+                Weather w = gson.fromJson(response, Weather.class);
+                tv1.setText(city + " " + w.getDate() + " 天气");
                 Data d = w.getData();
 
                 tv2.setText(d.toString());
@@ -158,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
 //                        " 空气质量："+quality+"  \n " +
 //                        " 建议："+ganmao);
                 //解析对象中数组对象
-                tv3.setText(city+" 最近5日天气预报：");
+                tv3.setText(city + " 最近5日天气预报：");
 
 //                JSONArray array = ParseData.parseObjectArray(data,"forecast");
 
@@ -168,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onError(VolleyError ve) {
-                Log.d(TAG, "onError: "+city+"  "+ve.toString());
+                Log.d(TAG, "onError: " + city + "  " + ve.toString());
             }
         });
     }
